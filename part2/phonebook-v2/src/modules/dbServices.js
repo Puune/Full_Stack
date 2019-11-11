@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001/persons';
+const baseUrl = '/api/persons';
 
 const readAll = () => {
     const request = axios.get(baseUrl);
@@ -15,7 +15,6 @@ const addContact = newObject => {
 
 const deleteContact = (id) => {    
     console.log(id);
-    
     const request = axios.delete(baseUrl + `/${id}`)
     return request.then(response => response.data)
 }

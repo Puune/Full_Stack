@@ -27,7 +27,7 @@ const InputForm = ({persons, setPersons, setMsg}) => {
             dbServices.
                 addContact(newMember)
                     .then(returnObj => {
-                    setPersons(persons.concat(returnObj));
+                    setPersons(returnObj);
             })
             .catch(error => {
                 setMsg(`Error Adding new person`);

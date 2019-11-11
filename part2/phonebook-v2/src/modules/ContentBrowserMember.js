@@ -4,6 +4,8 @@ import dbServices from './dbServices';
 const ContentBrowserMember = ({entry, setPersons, setMsg}) => {
 
     const onClickDelete = (event) => {
+        console.log(entry.id);
+        
         if(window.confirm(`Want to delete ${entry.name}?`)){
             let id = entry.id;
             event.preventDefault();
@@ -31,7 +33,6 @@ const ContentBrowserMember = ({entry, setPersons, setMsg}) => {
             setMsg(`${entry.name} deleted`)
             setTimeout(()=>{
                 setMsg(null)
-                window.location.reload(false)
             }, 3000)
         }
     }
