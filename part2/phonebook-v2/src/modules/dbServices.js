@@ -14,13 +14,12 @@ const addContact = newObject => {
 }
 
 const deleteContact = (id) => {    
-    console.log(id);
     const request = axios.delete(baseUrl + `/${id}`)
     return request.then(response => response.data)
 }
 
-const updateContact = (id, newObj) => {
-    const request = axios.put(baseUrl + `/${id}`, newObj)
+const updateContact = (newObj) => {
+    const request = axios.put(baseUrl + `/${newObj.id}`, newObj)
     return request.then(response => response.data)
 }
 export default {readAll, addContact, deleteContact, updateContact}

@@ -10,16 +10,16 @@ const ContentBrowser = ({persons, setPersons, searched, setMsg}) => {
     //make sure the list is never empty
     const createFilteredList = () => {
 
-        function composeList(member){
+        function composeList(member){            
             let upCaseName = new String(member.name).toUpperCase();
             let upCaseSearch = new String(searched).toUpperCase();
             if(upCaseName.includes(upCaseSearch)){                
                 results.push(member);
             }
         }
-
         let results = [];
         persons.forEach(composeList);
+        
         return (
             results
         )

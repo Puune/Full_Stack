@@ -27,10 +27,10 @@ const InputForm = ({persons, setPersons, setMsg}) => {
             dbServices.
                 addContact(newMember)
                     .then(returnObj => {
-                    setPersons(returnObj);
+                    setPersons(persons.concat(returnObj));
             })
-            .catch(error => {
-                setMsg(`Error Adding new person`);
+            .catch(error => {                
+                setMsg(`Error: ${error.response.data.error}`);
                 setTimeout(()=>{
                     setMsg(null);
                 }, 5000)
@@ -53,22 +53,24 @@ const InputForm = ({persons, setPersons, setMsg}) => {
             if(window.confirm(`${newMember.name} already exists, replace old number with new one?`)){
                 
                 //Get correct id
-                let id;
                 persons.forEach(person => {
                     if(person.name === newMember.name){
-                        id = person.id;
+                        newMember.id = person.id;
                     }
                 })
 
-                //update database, update persons
+                //update database, update persons                
                 dbServices
-                    .updateContact(id, newMember)
+                    .updateContact(newMember)
                         .then(response => {
-                        setPersons(()=>{
-                            let list = [...persons];
-                            list[id-1] = response;
-                            return list;
-                        })                            
+                        let list = [...persons];
+                        list.map(person => {
+                            if(person.id===response.id){
+                                person.name = response.name;
+                                person.number = response.number;                          
+                            }
+                        })                        
+                        setPersons(list);
                     })
                     .catch(error => {
                         setMsg(`Error: ${error}`);
