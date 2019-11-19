@@ -1,8 +1,11 @@
+const logger = require('./logger');
+const jwt = require('jsonwebtoken');
+
 const requestLogger = (request, response, next) => {
-  console.log('Method', request.method);
-  console.log('Path', request.path);
-  console.log('Body', request.body);
-  console.log('=======');
+  logger.info('Method', request.method);
+  logger.info('Path', request.path);
+  logger.info('Body', request.body);
+  logger.info('=======');
   next();
 }
 
@@ -11,19 +14,41 @@ const unknownEndpoint = (request, response) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-  console.log(error.message);
+  logger.error(error.message);
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
+  } else if(error.name === 'JsonWebTokenError') {
+    return response.status(401).json({error: 'invalid token'})
   }
 
   next(error)
 }
 
+
+const tokenExtractor = (request, response, next) => {
+  
+  const auth = request.get('authorization');
+  if(auth && auth.toLowerCase().startsWith('bearer ')){
+    const token = auth.substring(7);
+
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    if(!token || !decodedToken) {
+      response.status(404).json({error: 'token not found or invali'}).end();
+    }
+
+    request.token = decodedToken;
+    next();
+  } else {
+    next();
+  }
+}
+
 module.exports = {
   requestLogger,
   unknownEndpoint,
-  errorHandler
+  errorHandler,
+  tokenExtractor
 }
