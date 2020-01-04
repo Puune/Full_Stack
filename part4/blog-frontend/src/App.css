@@ -1,0 +1,11 @@
+.error {
+  border: solid red 4px;
+  text-decoration-color: red;
+}
+
+.message {
+  border: solid 1px;
+  text-decoration-color: aquamarine;
+  list-style: none;
+  margin: 2px;  
+}

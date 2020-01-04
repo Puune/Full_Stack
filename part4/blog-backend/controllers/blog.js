@@ -83,7 +83,7 @@ blogRouter.put('/:id', async (request, response, next) => {
     author: body.author,
     title: body.title,
     url: body.url,
-    upvotes: (typeof body.upvoted !== 'undefined') ? body.upvotes : 0
+    upvotes: (typeof body.upvotes !== 'undefined') ? body.upvotes : 0
   }
 
   try {
